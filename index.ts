@@ -347,7 +347,7 @@ export class ExtractRelations {
 }
 
 export class QueryParser {
-  private _sort: string;
+  private _sort: any;
   private _limit: any;
   private _where: any;
   private _fields: any;
@@ -386,7 +386,7 @@ export class QueryParser {
     if (!query) return {};
     this.boot(query);
 
-    return this[`parse_${this.schema.format}`]();
+    return this.parse_sql();
   }
 }
 
