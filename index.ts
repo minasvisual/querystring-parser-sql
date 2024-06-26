@@ -175,7 +175,7 @@ export class ExtractLimit {
       this._page = 1;
   }
   setOffset() {
-    let isValid = this._offset !== NaN;
+    let isValid = this._offset && !isNaN(this._offset);
     this._offset = this._limit
       ? this._limit * (this._page - 1)
       : isValid
@@ -546,6 +546,7 @@ export class QueryParserPrisma extends QueryParser {
 
 export class QueryParserTypeorm extends QueryParser {
   constructor(typeOrmOperations) {
+    if(!typeOrmOperations) throw new Error('Typeorm operators not provided')
     const Op = typeOrmOperations ?? {};
     super({
       format: "sequelize",
@@ -645,8 +646,8 @@ export class QueryParserTypeorm extends QueryParser {
       select: this._fields && this._fields.parse("object"),
       order: this._sort && this._sort.parse(),
       group: this._group,
-      take: limits.limit,
-      skip: limits.offset,
+      take: limits?.limit,
+      skip: limits?.offset,
     };
     let relations =
       this._relations &&
